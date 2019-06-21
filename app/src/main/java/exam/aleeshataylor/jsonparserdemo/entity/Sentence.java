@@ -3,27 +3,23 @@ package exam.aleeshataylor.jsonparserdemo.entity;
 import org.jetbrains.annotations.NotNull;
 
 public class Sentence {
-    String phrase;
+    String hitokoto;
     String author;
 
     public Sentence() {
     }
 
-    public Sentence(String phrase) {
-        this.phrase = phrase;
-    }
-
-    public Sentence(String phrase, String author) {
-        this.phrase = phrase;
+    public Sentence(String hitokoto, String author) {
+        this.hitokoto = hitokoto;
         this.author = author;
     }
 
-    public String getPhrase() {
-        return phrase;
+    public String getHitokoto() {
+        return hitokoto;
     }
 
-    public void setPhrase(String phrase) {
-        this.phrase = phrase;
+    public void setHitokoto(String hitokoto) {
+        this.hitokoto = hitokoto;
     }
 
     public String getAuthor() {
@@ -37,6 +33,6 @@ public class Sentence {
     @NotNull
     @Override
     public String toString() {
-        return "“" + phrase + "”\n\t——" + author;
+        return "“" + hitokoto + "”";
     }
 }

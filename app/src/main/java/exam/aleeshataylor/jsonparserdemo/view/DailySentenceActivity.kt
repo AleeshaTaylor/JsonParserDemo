@@ -10,6 +10,7 @@ import exam.aleeshataylor.jsonparserdemo.entity.Sentence
 import exam.aleeshataylor.jsonparserdemo.util.GetJsonUtil
 import exam.aleeshataylor.jsonparserdemo.util.ParserJson
 import kotlinx.android.synthetic.main.activity_daily_sentence.*
+import org.jetbrains.anko.sdk27.coroutines.onClick
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -40,7 +41,15 @@ class DailySentenceActivity : AppCompatActivity() {
         val parserJson = ParserJson()
         //获得每日一句的JSON数据的数组对象
         val ss: List<Sentence> = parserJson.parserArrayForSentence(jsonArr)
-        txt_daily.text = ss[0].toString()
+
+        var temp: MutableList<Sentence>? = null
+        var num = 0
+
+        if (txt_daily.text == "每日一句"){
+            txt_daily.text = ss[0].toString()
+        }else {
+            txt_daily.text = ss[num].toString()
+        }
 
         val handler = @SuppressLint("HandlerLeak")
         object : Handler() {
@@ -48,7 +57,7 @@ class DailySentenceActivity : AppCompatActivity() {
                 super.handleMessage(msg)
                 when (msg.what) {
                     CHANGE_TEXT ->
-                        //在这里可以进行UI操作
+                        //在这里可以进行更新UI操作
                         for (i in 0 until ss.size) {
                             if (ss[i].toString() == txt_daily.text) {
                                 txt_daily.text = ss[i+1].toString()
@@ -69,6 +78,7 @@ class DailySentenceActivity : AppCompatActivity() {
         val timer = Timer()
         timer.scheduleAtFixedRate(object : TimerTask() {
             override fun run() {
+                //启动一个子线程
                 Thread(Runnable {
                     //新建一个Message对象，存储需要发送的消息
                     val message = Message()
@@ -79,15 +89,32 @@ class DailySentenceActivity : AppCompatActivity() {
             }
         }, timing, 1000 * 60 * 60 * 24)// 这里设定将延时每天固定执行
 
-        if (time == tagTime){
+//        if (time == tagTime){
+//            for (i in 0 until ss.size) {
+//                if (ss[i] == txt_daily.text) {
+//                    txt_daily.text = ss[i+1].toString()
+//                }
+//            }
+//        }
+        txt_daily.onClick {
             for (i in 0 until ss.size) {
-                if (ss[i] === txt_daily.text) {
+                if (ss[i].toString() == txt_daily.text) {
                     txt_daily.text = ss[i+1].toString()
+                    num = i+1
+                    break
                 }
             }
         }
-
     }
+
+//    override fun onSaveInstanceState(outState: Bundle?) {
+//        outState!!.putString("key1",txt_daily.text.toString())
+//        super.onSaveInstanceState(outState)
+//    }
+//
+//    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+//        super.onRestoreInstanceState(savedInstanceState)
+//    }
 
     /**
      * 显示JSON数组的值

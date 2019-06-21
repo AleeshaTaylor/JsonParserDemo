@@ -39,7 +39,7 @@ class ParserJson {
         for (i in 0 until array.length()) {
             val obj: JSONObject = array.getJSONObject(i)
             val s = Sentence(
-                obj.getString("phrase"),
+                obj.getString("hitokoto"),
                 obj.getString("author")
             )
             sentences.add(s)
